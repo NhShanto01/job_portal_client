@@ -1,0 +1,45 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const JobCard = ({ job }) => {
+    const { _id, title, company, company_logo, requirements, description, location, salaryRange } = job;
+    return (
+        <div className="card bg-base-100 shadow-sm border-2 border-blue-200 hover:border-blue-400 transition-all duration-300 hover:shadow-lg hover:scale-105 hover:bg-blue-50">
+           <div className='flex items-center gap-4 p-2'>
+             <figure>
+                <img
+                    className='w-16'
+                    src={company_logo}
+                    alt="Company" />
+            </figure>
+            <div>
+                <h4 className='text-2xl'>{company}</h4>
+                <p>{location}</p>
+            </div>
+           </div>
+            <div className="card-body">
+                <h2 className="card-title">{title}
+                    <div className="badge badge-secondary">NEW</div>
+                </h2>
+                <p>{description}</p>
+                <div className='flex gap-2 flex-wrap'>
+                    {
+                        requirements.map((skill, index) => <p
+                         key={index}
+                         className='border rounded-md text-center px-2 hover:text-blue-400 hover:bg-blue-100'> {skill}</p>)
+                    }
+                </div>
+                <div className="card-actions flex justify-end items-center mt-4">
+                    <p>Salary:{salaryRange.min} - {salaryRange.max} {salaryRange.currency}</p>
+                    <Link to={`/jobs/${_id}`} className="">
+                        <button className="btn border-blue-600 text-blue-600 hover:text-white hover:bg-blue-500">Apply</button>
+                    </Link>
+                </div>
+            </div>
+        </div>
+
+
+    );
+};
+
+export default JobCard;
