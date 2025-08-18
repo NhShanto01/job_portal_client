@@ -60,7 +60,7 @@ const JobApply = () => {
 
     return (
         <div>
-            <h1>Job Apply</h1>
+            <h1 className='text-center text-3xl font-bold my-6'>Provide Your Important Job's Files and Links</h1>
             <div className="card-body">
                 <form onSubmit={submitApplication} className="fieldset">
                     <label className="label">LinkedIn URL</label>

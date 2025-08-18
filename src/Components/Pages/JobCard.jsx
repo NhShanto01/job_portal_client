@@ -19,7 +19,8 @@ const JobCard = ({ job }) => {
     const formatSalary = (num) => num ? num.toLocaleString() : 0;
 
     return (
-        <div className="card bg-base-100 shadow-sm border-2 border-blue-200 hover:border-blue-400 transition-all duration-300 hover:shadow-lg hover:scale-105 hover:bg-blue-50">
+        <div className="card bg-base-100 shadow-lg transition-all duration-300 hover:shadow-lg hover:scale-105 hover:bg-blue-50 my-6">
+             {/* border-blue-200 hover:border-blue-400 */}
             <div className='flex items-center gap-4 p-2'>
                 <figure>
                     <img
@@ -33,11 +34,11 @@ const JobCard = ({ job }) => {
                     <p className='text-gray-600'>{location}</p>
                 </div>
             </div>
-
+            <hr className='mx-5'/>
             <div className="card-body">
                 <h2 className="card-title">
                     {title}
-                    <div className="badge badge-secondary">NEW</div>
+                    {/* <div className="badge badge-secondary">NEW</div> */}
                 </h2>
 
                 <p className="text-gray-700">{description}</p>
@@ -47,7 +48,7 @@ const JobCard = ({ job }) => {
                     {requirements.map((skill, index) => (
                         <span
                             key={index}
-                            className='border rounded-md text-sm px-2 py-1 hover:text-blue-500 hover:bg-blue-100 transition'
+                            className='font-bold rounded-md text-sm px-1 text-blue-500 bg-blue-100 transition'
                         >
                             {skill}
                         </span>
@@ -56,11 +57,11 @@ const JobCard = ({ job }) => {
 
                 {/* Salary + Apply */}
                 <div className="card-actions flex justify-between items-center mt-4">
-                    <p className="font-semibold text-blue-600">
+                    <p className="font-semibold ">
                         Salary: {formatSalary(minSalary)} - {formatSalary(maxSalary)} {salaryRange?.currency?.toUpperCase()}
                     </p>
                     <Link to={`/jobs/${_id}`}>
-                        <button className="btn border-blue-600 text-blue-600 hover:text-white hover:bg-blue-500 transition">
+                        <button className="btn border-blue-200 text-blue-600 hover:text-white hover:bg-blue-500 transition">
                             Apply
                         </button>
                     </Link>

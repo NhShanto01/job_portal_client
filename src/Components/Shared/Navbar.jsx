@@ -63,7 +63,7 @@ const Navbar = () => {
             <div className="navbar-end">
                 {
                     user ? <>
-                        <span className="text-blue-600 mr-2 border-2 rounded-md p-1">{user.email}</span>
+                        <span className="text-blue-600 mr-2 border-2 rounded-md p-1">{user?.displayName}</span>
                         <button onClick={handleLogout} className="btn btn-neutral">Logout
                             <IoMdExit/>
                         </button>

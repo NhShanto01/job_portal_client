@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import AuthContext from './AuthContext';
 import auth from '../firebase/firebase.init';
-import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import axios from 'axios';
 
 const googleProvider = new GoogleAuthProvider();
@@ -31,6 +31,12 @@ const AuthProvider = ({ children }) => {
     const logOutUser = () => {
         setLoading(true);
         return signOut(auth);
+    }
+
+    const updateUserProfile = (name,photo) => {
+        return updateProfile(auth.currentUser, {
+            displayName: name, photoURL: photo
+        });
     }
 
     // Capture the authentication state
@@ -69,6 +75,7 @@ const AuthProvider = ({ children }) => {
         loginUser,
         loginWithGoogle,
         logOutUser,
+        updateUserProfile,
     };
     // console.log(setUser);
 

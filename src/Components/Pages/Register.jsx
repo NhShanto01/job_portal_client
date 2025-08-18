@@ -4,14 +4,18 @@ import { useContext } from 'react';
 import AuthContext from '../../Context/AuthContext';
 import SocialAuth from './SocialAuth';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
 
-    const { createUser } = useContext(AuthContext);
+    const { createUser, updateUserProfile } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleRegister = (e) => {
         e.preventDefault();
         const form = e.target;
+        const name = form.name.value;
+        const photoURL = form.photoURL.value;
         const email = form.email.value;
         const password = form.password.value;
 
@@ -30,10 +34,16 @@ const Register = () => {
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: "Registration successful! Please log in.",
+                    title: "Registration successful!",
                     showConfirmButton: false,
                     timer: 1500
                 });
+                updateUserProfile(name,photoURL)
+                .then(() => {
+                    console.log('user profile data updated')
+                })
+                .catch(error => console.log(error));
+                navigate('/')
             })
             .catch(error => {
                 console.error('Error creating user:', error);
@@ -53,6 +63,10 @@ const Register = () => {
                     <h1 className="ml-8 mt-4 text-5xl font-bold">Register now!</h1>
                     <div className="card-body">
                         <form onSubmit={handleRegister} className="fieldset">
+                            <label className="label">Your Name</label>
+                            <input type="text" name="name" className="input" placeholder="Your Name" required />
+                            <label className="label">Photo URL</label>
+                            <input type="url" name="photoURL" className="input" placeholder="Your Photo URL" required />
                             <label className="label">Email</label>
                             <input type="email" name="email" className="input" placeholder="Email" required />
                             <label className="label">Password</label>

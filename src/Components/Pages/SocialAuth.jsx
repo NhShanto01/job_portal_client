@@ -1,17 +1,26 @@
 import React, { useContext } from 'react';
 import AuthContext from '../../Context/AuthContext';
 import { FaGoogle } from 'react-icons/fa';
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const SocialAuth = () => {
 
     const { loginWithGoogle } = useContext(AuthContext);
+        const navigate = useNavigate();
 
     const handleGoogleSignIn = () => {
         loginWithGoogle()
             .then(result => {
                 console.log(result.user);
-                console.log('Google Sign In Successful:',
-                    result.user);
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Login Successfully!",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                navigate('/');
 
             })
             .catch(error => {
@@ -22,7 +31,7 @@ const SocialAuth = () => {
         <div className='m-4'>
             <div className="divider">OR</div>
             <button onClick={handleGoogleSignIn} className="btn">
-                <FaGoogle/>
+                <FaGoogle />
                 Google
             </button>
         </div>
