@@ -5,11 +5,13 @@ import AuthContext from '../../Context/AuthContext';
 import SocialAuth from './SocialAuth';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import useAxiosPublic from '../../Hooks/useAxiosPublic';
 
 const Register = () => {
 
     const { createUser, updateUserProfile } = useContext(AuthContext);
     const navigate = useNavigate();
+    const axiosPublic = useAxiosPublic();
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -18,6 +20,7 @@ const Register = () => {
         const photoURL = form.photoURL.value;
         const email = form.email.value;
         const password = form.password.value;
+        const role = form.role.value;
 
         // Simple password validation
         const passwordRegex = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
@@ -30,27 +33,38 @@ const Register = () => {
         createUser(email, password)
             .then(result => {
                 console.log('User created:', result.user);
-                form.reset(); // Reset the form after successful registration
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Registration successful!",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                updateUserProfile(name,photoURL)
-                .then(() => {
-                    console.log('user profile data updated')
-                })
-                .catch(error => console.log(error));
-                navigate('/')
+                updateUserProfile(name, photoURL)
+                    .then(() => {
+                        const userInfo = {
+                            name: name,
+                            email: email,
+                            photoURL: photoURL,
+                            role: role,
+                        }
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log('User info saved:', res.data);
+                                    form.reset(); // Reset the form after successful registration
+                                    Swal.fire({
+                                        position: "top-end",
+                                        icon: "success",
+                                        title: "Registration successful!",
+                                        showConfirmButton: false,
+                                        timer: 1500
+                                    });
+                                    navigate('/')
+                                }
+                            })
+                    })
+
             })
             .catch(error => {
                 console.error('Error creating user:', error);
                 alert(error.message);
             });
 
-        console.log('Email:', email, 'Password:', password);
+        console.log('Email:', email, 'Password:', password, 'Role:', role);
     };
 
     return (
@@ -71,6 +85,15 @@ const Register = () => {
                             <input type="email" name="email" className="input" placeholder="Email" required />
                             <label className="label">Password</label>
                             <input type="password" name="password" className="input" placeholder="Password" required />
+                            <div className='mt-5 mb-2 flex items-center gap-2'>
+                                <input type="radio" name="role" value="Candidate" className="radio" defaultChecked />
+                                <label>Candidate</label>
+                            </div>
+                            <div className='mb-5 flex items-center gap-2'>
+                                <input type="radio" name="role" value="Recruiter" className="radio" />
+                                <label>Recruiter</label>
+                            </div>
+
                             <div><a className="link link-hover">Forgot password?</a></div>
                             <button className="btn btn-neutral mt-4">Register</button>
                         </form>

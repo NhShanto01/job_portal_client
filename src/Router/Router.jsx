@@ -14,12 +14,15 @@ import AddJob from '../Components/Pages/AddJob';
 import MyPostedJobs from '../Components/Pages/myPostedJobs';
 import ViewApplicants from '../Components/Pages/ViewApplicants';
 import AllJobs from '../Components/Pages/AllJobs';
+import Dashboard from '../Components/Dashboard/Dashboard';
+import AllUsers from '../Components/Dashboard/AllUsers';
+import Error from '../Components/Shared/Error';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
-    errorElement: <div>Page not found</div>,
+    errorElement: <Error />,
     children: [
       {
         path: '/',
@@ -84,6 +87,16 @@ const router = createBrowserRouter([
       {
         path: 'login',
         element: <Login></Login>,
+      },
+    ]
+  },
+  {
+    path: '/dashboard',
+    element: <PrivateRoute><Dashboard /></PrivateRoute>,
+    children: [
+      {
+        path: 'all-users',
+        element: <AllUsers />,
       },
     ]
   },
