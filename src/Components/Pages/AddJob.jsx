@@ -13,7 +13,13 @@ const AddJob = () => {
         const formData = new FormData(e.target);
         const initialData = Object.fromEntries(formData.entries());
         const { min, max, currency, ...newJob } = initialData;
-        newJob.salaryRange = { min, max, currency }
+        newJob.salaryRange = {
+            min: Number(min),
+            max: Number(max),
+            currency
+        };
+
+        // newJob.salaryRange = { min, max, currency }
         newJob.requirements = newJob.requirements.split('\n');
         newJob.responsibilities = newJob.responsibilities.split('\n');
 
@@ -75,8 +81,9 @@ const AddJob = () => {
                                 <option disabled={true}>Pick a Job Field</option>
                                 <option>Engineering</option>
                                 <option>Marketing</option>
-                                <option>Finence</option>
+                                <option>Finance</option>
                                 <option>Development</option>
+                                <option>Designer</option>
                             </select>
                         </fieldset>
                         <fieldset className="fieldset p-4">

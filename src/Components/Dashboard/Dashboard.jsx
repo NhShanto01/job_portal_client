@@ -14,7 +14,7 @@ const Dashboard = () => {
   }
 
   // Normalize role to lowercase to avoid comparison issues
-  const userRole = user?.role?.toLowerCase() || 'admin'; // 'recruiter' 'candidate'
+  const userRole = user.role ; // 'recruiter' 'candidate'
   const isAdmin = userRole === 'admin';
   const isCandidate = userRole === 'candidate';
   const isRecruiter = userRole === 'recruiter';
