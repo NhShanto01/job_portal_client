@@ -17,6 +17,7 @@ import AllJobs from '../Components/Pages/AllJobs';
 import Dashboard from '../Components/Dashboard/Dashboard';
 import AllUsers from '../Components/Dashboard/AllUsers';
 import Error from '../Components/Shared/Error';
+import Profile from '../Components/Dashboard/profile';
 
 const router = createBrowserRouter([
   {
@@ -40,37 +41,37 @@ const router = createBrowserRouter([
         </PrivateRoute>,
         loader: ({ params }) => fetch(`http://localhost:5000/jobs/${params.id}`)
       },
-      {
-        path: '/jobApply/:id',
-        element: 
-        <PrivateRoute>
-          <JobApply />
-        </PrivateRoute>,
-      },
-      {
-        path: '/myApplications',
-        element: 
-        <PrivateRoute>
-          <MyApplications />
-        </PrivateRoute>,
+      // {
+      //   path: '/jobApply/:id',
+      //   element: 
+      //   <PrivateRoute>
+      //     <JobApply />
+      //   </PrivateRoute>,
+      // },
+      // {
+      //   path: '/myApplications',
+      //   element: 
+      //   <PrivateRoute>
+      //     <MyApplications />
+      //   </PrivateRoute>,
 
-      },
-      {
-        path: '/addJob',
-        element: 
-        <PrivateRoute>
-          <AddJob />
-        </PrivateRoute>,
+      // },
+      // {
+      //   path: '/addJob',
+      //   element: 
+      //   <PrivateRoute>
+      //     <AddJob />
+      //   </PrivateRoute>,
 
-      },
-      {
-        path: '/myPostedJobs',
-        element: 
-        <PrivateRoute>
-          <MyPostedJobs />
-        </PrivateRoute>,
+      // },
+      // {
+      //   path: '/myPostedJobs',
+      //   element: 
+      //   <PrivateRoute>
+      //     <MyPostedJobs />
+      //   </PrivateRoute>,
 
-      },
+      // },
       {
         path: '/viewApplicants/:job_id',
         element: 
@@ -98,6 +99,39 @@ const router = createBrowserRouter([
         path: 'all-users',
         element: <AllUsers />,
       },
+            {
+        path: 'jobApply/:id',
+        element: 
+        
+          <JobApply />,
+      },
+      {
+        path: 'myApplications',
+        element: 
+        
+          <MyApplications />,
+      },
+      {
+        path: 'addJob',
+        element: <AddJob />,
+
+      },
+      {
+        path: 'myPostedJobs',
+        element: <MyPostedJobs />,
+      },
+      {
+        path: 'profile',
+        element: <Profile />,
+      },
+      // {
+      //   path: 'candidate-profile',
+      //   element: <CandidateProfile />,
+      // },
+      // {
+      //   path: 'recruiter-profile',
+      //   element: <RecruiterProfile />,
+      // },
     ]
   },
 

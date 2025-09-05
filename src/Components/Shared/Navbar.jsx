@@ -27,6 +27,9 @@ const Navbar = () => {
                 <NavLink to="/all-jobs">All Jobs</NavLink>
             </li>
             <li>
+                <NavLink to="/dashboard">Dashboard</NavLink>
+            </li>
+            {/* <li>
                 <NavLink to="/addJob">Add Job</NavLink>
             </li>
             <li>
@@ -34,7 +37,7 @@ const Navbar = () => {
             </li>
             <li>
                 <NavLink to="/myApplications">My Application</NavLink>
-            </li>
+            </li> */}
         </>
 
     return (
@@ -63,7 +66,11 @@ const Navbar = () => {
             <div className="navbar-end">
                 {
                     user ? <>
-                        <span className="text-blue-600 mr-2 border-2 rounded-md p-1">{user?.displayName}</span>
+                    <div className='flex items-center mr-2 border-2 border-dashed rounded-md p-1'>
+                        <span className=" mr-2 font-bold">{user?.displayName}</span>
+                        <img src={user?.photoURL} alt={user?.displayName} className="w-10 h-10 rounded-full mr-3" />
+                    </div>
+                        
                         <button onClick={handleLogout} className="btn btn-neutral">Logout
                             <IoMdExit/>
                         </button>

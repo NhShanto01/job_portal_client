@@ -86,11 +86,11 @@ const Register = () => {
                             <label className="label">Password</label>
                             <input type="password" name="password" className="input" placeholder="Password" required />
                             <div className='mt-5 mb-2 flex items-center gap-2'>
-                                <input type="radio" name="role" value="Candidate" className="radio" defaultChecked />
+                                <input type="radio" name="role" value="candidate" className="radio" defaultChecked />
                                 <label>Candidate</label>
                             </div>
                             <div className='mb-5 flex items-center gap-2'>
-                                <input type="radio" name="role" value="Recruiter" className="radio" />
+                                <input type="radio" name="role" value="recruiter" className="radio" />
                                 <label>Recruiter</label>
                             </div>
 

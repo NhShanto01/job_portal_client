@@ -14,16 +14,15 @@ const Dashboard = () => {
   }
 
   // Normalize role to lowercase to avoid comparison issues
-  const userRole = user.role ; // 'recruiter' 'candidate'
+  const userRole = user.role || 'candidate'; // 'recruiter' 'candidate' 'admin'
   const isAdmin = userRole === 'admin';
   const isCandidate = userRole === 'candidate';
   const isRecruiter = userRole === 'recruiter';
 
   const linkClass = ({ isActive }) =>
-    `block px-3 py-2 rounded-md ${
-      isActive
-        ? 'bg-white text-blue-900 font-semibold'
-        : 'text-white hover:bg-white hover:text-blue-900'
+    `block px-3 py-2 rounded-md ${isActive
+      ? 'bg-white text-blue-900 font-semibold'
+      : 'text-white hover:bg-white hover:text-blue-900'
     }`;
 
   return (
@@ -61,7 +60,7 @@ const Dashboard = () => {
                 </NavLink>
               </li>
               <li className="my-2">
-                <NavLink to="/dashboard/my-applications" className={linkClass}>
+                <NavLink to="/dashboard/myApplications" className={linkClass}>
                   My Applications
                 </NavLink>
               </li>
@@ -72,18 +71,13 @@ const Dashboard = () => {
           {isRecruiter && (
             <>
               <li className="my-2">
-                <NavLink to="/dashboard/add-jobs" className={linkClass}>
+                <NavLink to="/dashboard/addJob" className={linkClass}>
                   Add Jobs
                 </NavLink>
               </li>
               <li className="my-2">
-                <NavLink to="/dashboard/my-posted-jobs" className={linkClass}>
+                <NavLink to="/dashboard/myPostedJobs" className={linkClass}>
                   My Posted Jobs
-                </NavLink>
-              </li>
-              <li className="my-2">
-                <NavLink to="/dashboard/view-candidates" className={linkClass}>
-                  View Candidates
                 </NavLink>
               </li>
             </>
