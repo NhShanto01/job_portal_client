@@ -1,18 +1,22 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Lottie from 'lottie-react';
 import loginLottieData from '../../assets/lottie/login.json';
 import AuthContext from '../../Context/AuthContext';
 import SocialAuth from './SocialAuth';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import useAxiosPublic from '../../Hooks/useAxiosPublic';
 
 const Login = () => {
 
-    const { loginUser } = useContext(AuthContext);
+    const { loginUser, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
     const form = location.state || '/';
+    const axiosPublic = useAxiosPublic();
+    const [loggedUser, setLoggedUser] = useState(null);
     console.log('Form location:', form);
+    console.log('Logged user:', loggedUser);
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -20,24 +24,44 @@ const Login = () => {
         const email = form.email.value;
         const password = form.password.value;
 
-        loginUser(email, password)
-            .then(result => {
-                console.log('User logged in:', result.user);
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "Login Successfully!",
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-                navigate('/');
-                form.reset(); // Reset the form after successful login
-
-            })
-            .catch(error => {
-                console.error('Error logging in:', error);
-                alert(error.message);
+        // start
+        // In your login component
+       loginUser(email, password)
+        .then(result => {
+            setLoggedUser(result.user);
+            // Use result.user directly
+            return axiosPublic.get(`/users/${result.user.email}`).then(response => ({
+            user: result.user,
+            dbData: response.data
+            }));
+        })
+        .then(({ user, dbData }) => {
+            if (dbData.success) {
+            const completeUserData = {
+                ...user,
+                role: dbData.user.role
+            };
+            console.log('Complete User Data:', completeUserData);
+            setUser(completeUserData);
+            
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Login Successfully!",
+                showConfirmButton: false,
+                timer: 1500
             });
+            navigate('/');
+            form.reset();
+            } else {
+            throw new Error('User data not found in database');
+            }
+        })
+        .catch(error => {
+            console.error('Error logging in:', error);
+            alert(error.message);
+        });
+        // end
 
         console.log('Email:', email, 'Password:', password);
     };

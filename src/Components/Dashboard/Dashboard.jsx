@@ -1,9 +1,20 @@
 import React, { useContext } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import AuthContext from '../../Context/AuthContext';
+import { IoMdExit } from 'react-icons/io';
 
 const Dashboard = () => {
-  const { user, loading } = useContext(AuthContext);
+  const { user, loading, logOutUser } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logOutUser()
+      .then(() => {
+        console.log('User logged out');
+      })
+      .catch(error => {
+        console.error('Error logging out:', error);
+      });
+  };
 
   if (loading) {
     return (
@@ -13,11 +24,10 @@ const Dashboard = () => {
     );
   }
 
-  // Normalize role to lowercase to avoid comparison issues
-  const userRole = user.role || 'candidate'; // 'recruiter' 'candidate' 'admin'
-  const isAdmin = userRole === 'admin';
-  const isCandidate = userRole === 'candidate';
-  const isRecruiter = userRole === 'recruiter';
+  const userRole = user.role; // 'recruiter' 'candidate' 'admin'
+  const isAdmin = userRole === 'Admin';
+  const isCandidate = userRole === 'Candidate';
+  const isRecruiter = userRole === 'Recruiter';
 
   const linkClass = ({ isActive }) =>
     `block px-3 py-2 rounded-md ${isActive
@@ -26,26 +36,22 @@ const Dashboard = () => {
     }`;
 
   return (
-    <div className="flex">
+    <div className="flex ">
       {/* Dashboard Sidebar */}
-      <div className="w-64 min-h-screen bg-blue-900">
-        <ul className="menu p-4">
+      <div className="w-64 min-h-screen bg-blue-900 flex flex-col">
+        {/* Sidebar Menu */}
+        <ul className="menu p-4 flex-grow">
           {/* Admin Routes */}
           {isAdmin && (
             <>
               <li className="my-2">
+                <NavLink to="/dashboard" end className={linkClass}>
+                  Profile
+                </NavLink>
+              </li>
+              <li className="my-2">
                 <NavLink to="/dashboard/all-users" className={linkClass}>
                   All Users
-                </NavLink>
-              </li>
-              <li className="my-2">
-                <NavLink to="/dashboard/manage-jobs" className={linkClass}>
-                  Manage Jobs
-                </NavLink>
-              </li>
-              <li className="my-2">
-                <NavLink to="/dashboard/manage-candidates" className={linkClass}>
-                  Manage Candidates
                 </NavLink>
               </li>
             </>
@@ -55,7 +61,7 @@ const Dashboard = () => {
           {isCandidate && (
             <>
               <li className="my-2">
-                <NavLink to="/dashboard/profile" className={linkClass}>
+                <NavLink to="/dashboard" end className={linkClass}>
                   Profile
                 </NavLink>
               </li>
@@ -70,6 +76,11 @@ const Dashboard = () => {
           {/* Recruiter Routes */}
           {isRecruiter && (
             <>
+              <li className="my-2">
+                <NavLink to="/dashboard" end className={linkClass}>
+                  Profile
+                </NavLink>
+              </li>
               <li className="my-2">
                 <NavLink to="/dashboard/addJob" className={linkClass}>
                   Add Jobs
@@ -107,7 +118,17 @@ const Dashboard = () => {
             </NavLink>
           </li>
         </ul>
+
+        {/* Logout Button at Bottom */}
+        <button
+          onClick={handleLogout}
+          className="mt-auto m-4 flex items-center gap-2 text-white font-bold cursor-pointer"
+        >
+          <IoMdExit size={20} />
+          Logout
+        </button>
       </div>
+
 
       {/* Dashboard Content */}
       <div className="flex-1 p-4">

@@ -6,7 +6,8 @@ import { IoMdExit } from 'react-icons/io';
 
 const Navbar = () => {
 
-    const { user,logOutUser } = useContext(AuthContext);
+    const { user, logOutUser } = useContext(AuthContext);
+    console.log("User object:", user);
 
     const handleLogout = () => {
         logOutUser()
@@ -66,13 +67,27 @@ const Navbar = () => {
             <div className="navbar-end">
                 {
                     user ? <>
-                    <div className='flex items-center mr-2 border-2 border-dashed rounded-md p-1'>
-                        <span className=" mr-2 font-bold">{user?.displayName}</span>
-                        <img src={user?.photoURL} alt={user?.displayName} className="w-10 h-10 rounded-full mr-3" />
-                    </div>
-                        
+                        <div className='flex items-center mr-2 border-2 rounded-md p-1'>
+                            <span className=" mr-2 font-bold">{user.displayName}</span>
+                            {user.photoURL ? (
+                                <img
+                                    src={user.photoURL}
+                                    alt="Avatar"
+                                    className="w-10 h-10 rounded-full object-cover"
+                                    onError={(e) => {
+                                        e.currentTarget.onerror = null; // Prevent infinite loop
+                                        e.currentTarget.src = ""; // Remove src to fallback into text avatar
+                                    }}
+                                />
+                            ) : (
+                                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-500 text-white font-bold">
+                                    {user.displayName?.substring(0, 2).toUpperCase()}
+                                </div>
+                            )}
+                        </div>
+
                         <button onClick={handleLogout} className="btn btn-neutral">Logout
-                            <IoMdExit/>
+                            <IoMdExit />
                         </button>
                     </> : <>
                         <Link to="/register" className="text-blue-600 mr-2 cursor-pointer">Register</Link>

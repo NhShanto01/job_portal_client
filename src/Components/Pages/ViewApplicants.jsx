@@ -36,7 +36,8 @@ const ViewApplicants = () => {
 
 
     return (
-        <div>
+        <div className="container mx-auto p-4 mb-8">
+            <h2 className="text-3xl text-center my-4 font-semibold mb-4">All Applicants</h2>
             <div className="overflow-x-auto">
                 <table className="table">
                     {/* head */}
@@ -44,7 +45,7 @@ const ViewApplicants = () => {
                         <tr>
                             <th></th>
                             <th>Applicant Email</th>
-                            <th>Status</th>
+                            {/* <th>Status</th> */}
                             <th>Update Status</th>
                         </tr>
                     </thead>
@@ -55,9 +56,9 @@ const ViewApplicants = () => {
                                 <tr key={app._id}>
                                     <th>{index + 1}</th>
                                     <td>{app.applicantEmail}</td>
-                                    <td>
+                                    {/* <td>
                                         <button className="btn btn-link btn-accent">View Resume</button>
-                                    </td>
+                                    </td> */}
                                     <td>
                                         <select 
                                         onChange={(e) => handleStatusUpdate(app._id, e)}

@@ -3,6 +3,7 @@ import AuthContext from '../../Context/AuthContext';
 
 const Profile = () => {
     const { user } = useContext(AuthContext);
+    console.log('Profile User:', user);
     return (
         <>
             <div>

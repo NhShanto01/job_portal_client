@@ -41,13 +41,13 @@ const router = createBrowserRouter([
         </PrivateRoute>,
         loader: ({ params }) => fetch(`http://localhost:5000/jobs/${params.id}`)
       },
-      // {
-      //   path: '/jobApply/:id',
-      //   element: 
-      //   <PrivateRoute>
-      //     <JobApply />
-      //   </PrivateRoute>,
-      // },
+      {
+        path: '/jobApply/:id',
+        element: 
+        <PrivateRoute>
+          <JobApply />
+        </PrivateRoute>,
+      },
       // {
       //   path: '/myApplications',
       //   element: 
@@ -96,20 +96,16 @@ const router = createBrowserRouter([
     element: <PrivateRoute><Dashboard /></PrivateRoute>,
     children: [
       {
+        index: true,
+        element: <Profile />,
+      },
+      {
         path: 'all-users',
         element: <AllUsers />,
       },
-            {
-        path: 'jobApply/:id',
-        element: 
-        
-          <JobApply />,
-      },
       {
         path: 'myApplications',
-        element: 
-        
-          <MyApplications />,
+        element: <MyApplications />,
       },
       {
         path: 'addJob',
@@ -120,18 +116,7 @@ const router = createBrowserRouter([
         path: 'myPostedJobs',
         element: <MyPostedJobs />,
       },
-      {
-        path: 'profile',
-        element: <Profile />,
-      },
-      // {
-      //   path: 'candidate-profile',
-      //   element: <CandidateProfile />,
-      // },
-      // {
-      //   path: 'recruiter-profile',
-      //   element: <RecruiterProfile />,
-      // },
+
     ]
   },
 

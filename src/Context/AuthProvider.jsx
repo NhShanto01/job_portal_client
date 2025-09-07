@@ -33,41 +33,91 @@ const AuthProvider = ({ children }) => {
         return signOut(auth);
     }
 
-    const updateUserProfile = (name,photo,role) => {
+    const updateUserProfile = (name, photo, role) => {
         return updateProfile(auth.currentUser, {
-            displayName: name, photoURL: photo, role:role
+            displayName: name, photoURL: photo, role: role
         });
     }
 
     // Capture the authentication state
+    // useEffect(() => {
+    //     const unsubscribe = onAuthStateChanged(auth, currentUser => {
+    //         setUser(currentUser);
+    //         console.log('State Captured:', currentUser?.email);
+
+    //         if (currentUser?.email) {
+    //             const user = { email: currentUser.email };
+    //             axios.post('http://localhost:5000/jwt', user, { withCredentials: true })
+    //                 .then(res => {
+    //                     console.log('Login Token:', res.data);
+    //                     setLoading(false);
+    //                 })
+    //         }
+    //         else {
+    //             axios.post('http://localhost:5000/logout', {}, { withCredentials: true })
+    //                 .then(res => {
+    //                     console.log('logout:', res.data);
+    //                     setLoading(false);
+    //                 })
+
+    //         }
+
+    //     })
+    //     return () => {
+    //         unsubscribe();
+    //     }
+    // });
+
+
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, currentUser => {
-            setUser(currentUser);
-            console.log('State Captured:', currentUser?.email);
+        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+            setLoading(true);
 
             if (currentUser?.email) {
-                const user = { email: currentUser.email };
-                axios.post('http://localhost:5000/jwt', user, { withCredentials: true })
-                    .then(res => {
-                        console.log('Login Token:', res.data);
-                        setLoading(false);
-                    })
+                try {
+                    // Fetch user data from your backend (including role)
+                    const res = await axios.get(`http://localhost:5000/users/${currentUser.email}`);
+                    const dbUser = res.data.user;
+
+                    // ✅ Enrich Firebase user with role
+                    const enrichedUser = {
+                        ...currentUser,
+                        role: dbUser?.role || 'candidate', // fallback role
+                    };
+
+                    setUser(enrichedUser);
+
+                    // Set JWT cookie
+                    await axios.post(
+                        'http://localhost:5000/jwt',
+                        { email: currentUser.email },
+                        { withCredentials: true }
+                    );
+                } catch (error) {
+                    console.error('Failed to fetch user data:', error);
+                    // Still log in user, but without role
+                    setUser({ ...currentUser, role: 'candidate' });
+                }
+            } else {
+                // No user logged in
+                setUser(null);
+
+                // Clear JWT cookie
+                try {
+                    await axios.post('http://localhost:5000/logout', {}, { withCredentials: true });
+                } catch (err) {
+                    console.error('Logout cleanup failed:', err);
+                }
             }
-            else {
-                axios.post('http://localhost:5000/logout', {}, { withCredentials: true })
-                    .then(res => {
-                        console.log('logout:', res.data);
-                        setLoading(false);
-                    })
 
-            }
+            // ✅ Always end loading
+            setLoading(false);
+        });
 
-        })
-        return () => {
-            unsubscribe();
-        }
-    });
+        return () => unsubscribe();
+    }, []);
 
+    
     const authInfo = {
         user,
         loading,
@@ -76,6 +126,7 @@ const AuthProvider = ({ children }) => {
         loginWithGoogle,
         logOutUser,
         updateUserProfile,
+        setUser: setUser,
     };
     // console.log(setUser);
 
