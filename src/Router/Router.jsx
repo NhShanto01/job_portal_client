@@ -18,6 +18,9 @@ import Dashboard from '../Components/Dashboard/Dashboard';
 import AllUsers from '../Components/Dashboard/AllUsers';
 import Error from '../Components/Shared/Error';
 import Profile from '../Components/Dashboard/profile';
+import AboutUs from '../Components/Shared/AboutUs';
+import ContactUs from '../Components/Shared/ContactUs';
+import AllBlogs from '../Components/Pages/AllBlogs';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +35,18 @@ const router = createBrowserRouter([
       {
         path: '/all-jobs',
         element: <AllJobs></AllJobs>,
+      },
+      {
+        path: '/all-blogs',
+        element: <AllBlogs></AllBlogs>,
+      },
+      {
+        path: '/about',
+        element: <AboutUs></AboutUs>,
+      },
+      {
+        path: '/contact-us',
+        element: <ContactUs></ContactUs>,
       },
       {
         path: '/jobs/:id',
